@@ -5,6 +5,12 @@ module Squid
   # A Plotter wraps a Prawn::Document object in order to provide new methods
   # like `gridline` or `ticks` used by Squid::Graph to plot graph elements.
   class Plotter
+    BADGE_SIZE = 5
+    BADGE_PADDING_RIGHT = 3
+    LABEL_FONT_SIZE = 12
+    LABEL_PADDING_RIGHT = 14
+
+
     attr_accessor :paddings
     # @param [Prawn::Document] a PDF document to wrap in a Plotter instance.
     def initialize(pdf, bottom:)
@@ -170,8 +176,8 @@ module Squid
     # symbol with the matching color. Labels are written from right to left.
     # @param
     def legend_item(label, x, color, options)
-      size, symbol_padding, entry_padding = 5, 3, 28
-      x -= @pdf.width_of(label, size: 12).ceil
+      size, symbol_padding, entry_padding = BADGE_SIZE, BADGE_PADDING_RIGHT, LABEL_PADDING_RIGHT
+      x -= @pdf.width_of(label, size: LABEL_FONT_SIZE).ceil
       @pdf.text_box legend_formatter(label), options.merge(at: [x, @pdf.bounds.height])
       x -= (symbol_padding + size)
       with fill_color: color do
